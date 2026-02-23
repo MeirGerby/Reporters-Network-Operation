@@ -19,7 +19,23 @@ class ImageOcr:
             print(self.text)
             # print(self.coord)
             # print(self.conf) 
-        return self.result
+        return self.result 
+    
+    def get_text(self):
+        if self.text is None:
+            raise ValueError('the text attribute is none, make sure the file is image with text inside')
+        return self.text
+
+    def get_coord(self):
+        if self.coord is None:
+            raise ValueError('the coord attribute is none, make sure the file is image with text inside')
+        return self.coord
+        
+    def get_conf(self):
+        if self.conf is None:
+            raise ValueError('the conf attribute is none, make sure the file is image with text inside')
+        return self.conf
+        
     
 
 # image = ImageOcr('ingestion_service/data/tweet_images\\tweet_6681.png')
