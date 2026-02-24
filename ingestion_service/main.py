@@ -1,9 +1,9 @@
-from .config import settings 
-from .service.mongo_loader import MongoLoaderClient 
-from .utils.read_data import ReadData 
-from .kafka_producer.producer import KafkaEventProducer 
-from .kafka_producer.evenv import Event 
-from .utils.ocr import MetadataExtractor
+from .app.config import settings 
+from .app.service.mongo_loader import MongoLoaderClient 
+from .app.utils.read_data import ReadData 
+from .app.kafka_producer.producer import KafkaEventProducer 
+from .app.kafka_producer.evenv import Event 
+from .app.utils.ocr import MetadataExtractor
 
 class Manager:
     def __init__(self):
