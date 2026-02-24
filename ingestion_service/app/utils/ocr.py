@@ -3,7 +3,7 @@ from easyocr import Reader
 class BaseOCR:
     def __init__(self, path):
         self.reader = Reader(['en'], gpu=False)
-        self.path = path
+        self.path = str(path)
         self.coord = None 
         self.text = None 
         self.conf = None 
@@ -20,17 +20,16 @@ class OCREngine(BaseOCR):
         
         if _text:
             self.coord = _text[0][0]     # type: ignore
-            self.text = _text[0][1]      # type: ignore
             self.conf = _text[0][2]       # type: ignore
-        for res in _text:
-            print(f"found: {self.text[1]}")
+            self.text = " ".join([res[1] for res in _text])     # type: ignore
 
         return self.result 
 
 class MetadataExtractor(OCREngine):
     def get_text(self):
         if self.text is None:
-            raise ValueError('the text attribute is none, make sure the file is image with text inside')
+            # raise ValueError('the text attribute is none, make sure the file is image with text inside')
+            return ""
         return self.text
 
     def get_coord(self):

@@ -6,8 +6,10 @@ class Settings(BaseSettings):
     MONGO_LOADER_URL: str = 'http://localhost:5000'
 
     KAFKA_BOOTSTRAP_SERVERS: str = "localhost:9092"
-    KAFKA_ORDERS_TOPIC: str =  "pizza-orders"
-    KAFKA_GROUP_ID: str = "text-team"
+    KAFKA_TOPIC: str =  ""
+    KAFKA_GROUP_ID: str = "" 
+
+    EVENT_TYPE: str = "IMAGE_PROCESSED"
 
     model_config = SettingsConfigDict(
         env_file='.env'

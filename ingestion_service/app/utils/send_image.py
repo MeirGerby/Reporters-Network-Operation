@@ -1,15 +1,25 @@
 import requests 
+from pathlib import Path
 
 class SendImage:
     def __init__(self, image, url, image_name):
-        self.image = image 
+        self.image: Path  = Path(image) 
         self.url: str = url
         self.image_name: str = image_name
+        self.valid_extention = ('.jpg', '.png', '.jpeg')
     
+    def validation_if_image(self) -> bool:
+        return self.image.is_file() and self.image.suffix.lower() in self.valid_extention
+
     def send_image(self):
-        with open(self.image, 'rb') as f:
-            response = requests.post(self.url, files=({"file": (self.image_name, f, 'image/png')}))
-        return response 
+        if not self.validation_if_image():
+            return f"the file is not validate {self.image}"
+        
+        with open(str(self.image), 'rb') as f:
+            files=({"file": (self.image_name, f, 'image/png')})
+            response = requests.post(self.url, files=files)
+        return response.text 
+    
     
 # send = SendImage(r'ingestion_service\data\tweet_images\tweet_0.png', 'http://localhost:5000','tweet_0.png')
 # image = r'ingestion_service\data\tweet_images\tweet_0.png'

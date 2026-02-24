@@ -14,7 +14,7 @@ class ReadData:
         return self.path_list
 
 # from ..config import settings
-# path = "ingestion_service/data/tweet_images" 
+# # path = "ingestion_service/data/tweet_images" 
 # read_data = ReadData(settings.FOLDER_PATH)
 # data = read_data.read_images()
 # print(data)

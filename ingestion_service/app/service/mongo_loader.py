@@ -1,5 +1,5 @@
-from utils.send_image import SendImage
-from config import settings
+from ..utils.send_image import SendImage
+from ..config import settings
 from pathlib import Path
 
 class MongoLoaderClient:
