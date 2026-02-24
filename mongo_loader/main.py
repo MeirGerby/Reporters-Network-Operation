@@ -1,6 +1,6 @@
 from fastapi import FastAPI 
 
-from .router.routes import router as upload_file_router
+from .app.router.routes import router as upload_file_router
 
 app = FastAPI(debug=True)
 app.include_router(upload_file_router) 
