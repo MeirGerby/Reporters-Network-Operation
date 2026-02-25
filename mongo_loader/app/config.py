@@ -22,4 +22,4 @@ class GridFSConfig(BaseSettings):
         extra='ignore'
     ) 
 
-    settings = GridFSConfig()
+settings = GridFSConfig()
