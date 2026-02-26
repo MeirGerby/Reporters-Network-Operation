@@ -17,3 +17,8 @@ class KafkaProducerWrapper:
 
         self.producer.poll(0)
 
+    def close(self):
+        """close the connection"""
+        self.producer.flush(10) 
+
+
