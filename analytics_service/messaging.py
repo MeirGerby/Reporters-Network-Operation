@@ -22,7 +22,7 @@ class KafkaProducerWrapper:
         self.producer.flush(10) 
 
 class KafkaConsumerWrapper:
-    def __init__(self, bootstrap_servers: str, topics: list, group_id: str):
+    def __init__(self, bootstrap_servers: str, group_id: str, topics: list):
         self.conf = {
             "bootstrap.servers": bootstrap_servers,
             "group.id": group_id,

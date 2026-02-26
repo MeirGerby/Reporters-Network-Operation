@@ -8,9 +8,21 @@ class Manager:
         self.analysed_topic = settings.ANALYTICS_TEXT_KAFKA_TOPIC
         self.bootstrap = settings.ANALYTICS_SERVICE_BOOTSTRAP_SERVERS 
         self.group_id = settings.ANALYTICS_SERVICE_GROUP_ID 
-        self.producer: KafkaProducerWrapper = None 
-        self.consumer: KafkaConsumerWrapper = None 
-    
+        self.producer: KafkaProducerWrapper = None   # type: ignore
+        self.consumer: KafkaConsumerWrapper = None    # type: ignore
     
 
-    def set_up(self):
+
+    async def set_up(self):
+        self.producer = KafkaProducerWrapper(
+            bootstrap_servers=self.bootstrap,
+            topic=self.analysed_topic
+        )
+
+        self.consumer = KafkaConsumerWrapper(
+            bootstrap_servers=self.bootstrap,
+            group_id=self.group_id,
+            topics= [self.clean_topic]   
+        )   
+
+    
