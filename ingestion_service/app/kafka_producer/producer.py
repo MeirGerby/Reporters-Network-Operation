@@ -14,7 +14,7 @@ class KafkaEventProducer:
 
         self._producer.produce(
             topic=topic,
-            value=event.to_json().encode('utf-8') 
+            value=event.to_json() 
         )
 
         self._producer.poll(0)

@@ -44,6 +44,6 @@ class MetadataExtractor(OCREngine):
         
     
 
-image = MetadataExtractor('ingestion_service/data/tweet_images\\tweet_6681.png')
-image.read_text_from_image()
-print(image.text)
+# image = MetadataExtractor('ingestion_service/data/tweet_images\\tweet_6681.png')
+# image.read_text_from_image()
+# print(image.text)

@@ -11,7 +11,7 @@ class Manager:
         self.path_list = self.data.read_images() 
 
         self.producer = KafkaEventProducer(brokers=[settings.KAFKA_BOOTSTRAP_SERVERS])
-        self.topic = settings.KAFKA_TOPIC
+        self.topic = settings.ROW_TEXT_KAFKA_TOPIC
         self.event_type = settings.EVENT_TYPE 
 
     def mongo_manager(self, img):
@@ -39,11 +39,14 @@ class Manager:
                 print(f"Mongo Status: {mongo_response}")
 
                 extractor = MetadataExtractor(path=img_path)
+                print('build extract instance')
                 extractor.read_text_from_image()
-                text_data = extractor.get_text()
+                print("enelize text from image")
+                text_data = extractor.get_text() 
+                print(f"text: {text_data}")
 
 
-                self.kafka_manager(payload={"image_path": str(img_path), "ocr_text": text_data})
+                self.kafka_manager(payload={"ocr_text": text_data})
                 
                 print(f"Successfully processed: {img_path}")
 
