@@ -21,4 +21,14 @@ class KafkaProducerWrapper:
         """close the connection"""
         self.producer.flush(10) 
 
+class KafkaConsumerWrapper:
+    def __init__(self, bootstrap_servers: str, topics: list, group_id: str):
+        self.conf = {
+            "bootstrap.servers": bootstrap_servers,
+            "group.id": group_id,
+            "auto.offset.reset": "earliest"
+            }
+        self.consumer = Consumer(self.conf)   # type: ignore
+        self.topic = topics 
 
+    
