@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, HTTPException, Depends
+from fastapi import UploadFile, File, HTTPException, Depends, APIRouter
 from typing import Annotated
 from bson import ObjectId
 
@@ -7,7 +7,7 @@ from service.grid_orchestrator import GridFSOrchestrator
 from repository.grid_fs_storage import GridFSStorage
 
 
-app = FastAPI(debug=True)
+router = APIRouter()
 
 
 def get_orchestrator() -> GridFSOrchestrator:
@@ -16,7 +16,7 @@ def get_orchestrator() -> GridFSOrchestrator:
 
 OrchestratorDep = Annotated[GridFSOrchestrator, Depends(get_orchestrator)]
 
-@app.post("/upload-image/")
+@router.post("/upload-image/")
 async def upload_image(
     orchestrator: OrchestratorDep,
     file: UploadFile = File(...)
@@ -41,7 +41,7 @@ async def upload_image(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
-@app.get("/image-info/{file_id}")
+@router.get("/image-info/{file_id}")
 async def get_image_info(file_id: str, orchestrator: OrchestratorDep):
     if not ObjectId.is_valid(file_id):
         raise HTTPException(status_code=400, detail="Invalid File ID format")
@@ -55,7 +55,3 @@ async def get_image_info(file_id: str, orchestrator: OrchestratorDep):
     info["_id"] = str(info["_id"])
     return info
 
-if __name__ == "__main__":
-    import uvicorn
-    settings.temp_download_path.mkdir(parents=True, exist_ok=True)
-    uvicorn.run(app, host="0.0.0.0", port=8000)

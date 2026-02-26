@@ -7,7 +7,7 @@ class Settings(BaseSettings):
 
     KAFKA_BOOTSTRAP_SERVERS: str = "localhost:9092"
     ROW_TEXT_KAFKA_TOPIC: str =  "row-text"
-    ROW_TEXT_KAFKA_GROUP_ID: str = "analyse-text" 
+    # ROW_TEXT_KAFKA_GROUP_ID: str = "analyse-text" 
 
     EVENT_TYPE: str = "IMAGE_PROCESSED"
 
