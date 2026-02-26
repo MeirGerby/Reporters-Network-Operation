@@ -1,7 +1,7 @@
 from messaging import KafkaConsumerWrapper, KafkaProducerWrapper 
 from text_cleaner import TextCleaner
 from config import settings
-
+import asyncio 
 
 class Manager():
     def __init__(self):
@@ -27,15 +27,17 @@ class Manager():
     
     async def handle_messeges(self, data: dict):
         """get a dict from consumer and handle the text by cleaning it"""
-        text = data.get('text', '') 
-        text_cleaner: TextCleaner = TextCleaner(text)
-        clean = self.clean_text(text_cleaner)
+        try:
+            base_text = data.get('text', '') 
+            text_cleaner: TextCleaner = TextCleaner(base_text)
+            text_after_cleaning = await self.clean_text(text_cleaner)
 
-        await self.producer.send({"cleaned_text": clean})
-        return 
+            await self.producer.send({"cleaned_text": text_after_cleaning})
+        except Exception as e:
+            print("The proccesed faild {e}")
     
     async def clean_text(self, cleaner: TextCleaner):
-        # self.clean = TextCleaner(text=text) 
+        """clean text punctuation"""
         return cleaner.clean_text_pucnt() 
     
     async def run(self):
@@ -48,3 +50,9 @@ class Manager():
     async def main(self):
         await self.run()
         
+if __name__ == "__main__":
+    manager = Manager()
+    try:
+        asyncio.run(manager.main()) 
+    except KeyboardInterrupt:
+        print(f"proccess stoped by user")
