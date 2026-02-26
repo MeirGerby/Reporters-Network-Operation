@@ -1,5 +1,6 @@
 from messaging import KafkaConsumerWrapper, KafkaProducerWrapper 
-from config import settings 
+from config import settings
+from text_analizer import TextAnalyzer
 
 
 class Manager:
@@ -9,11 +10,10 @@ class Manager:
         self.bootstrap = settings.ANALYTICS_SERVICE_BOOTSTRAP_SERVERS 
         self.group_id = settings.ANALYTICS_SERVICE_GROUP_ID 
         self.producer: KafkaProducerWrapper = None   # type: ignore
-        self.consumer: KafkaConsumerWrapper = None    # type: ignore
-    
+        self.consumer: KafkaConsumerWrapper = None    # type: ignore 
+        self.weapon_file = settings.WEAPON_LIST_FILE 
 
-
-    async def set_up(self):
+    def set_up(self):
         self.producer = KafkaProducerWrapper(
             bootstrap_servers=self.bootstrap,
             topic=self.analysed_topic
@@ -24,5 +24,6 @@ class Manager:
             group_id=self.group_id,
             topics= [self.clean_topic]   
         )   
+
 
     
