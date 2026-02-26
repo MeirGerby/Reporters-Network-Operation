@@ -7,7 +7,8 @@ class Manager():
     def __init__(self):
         self.bootstrap_server = settings.CLEAN_SERVICE_BOOTSTRAP_SERVERS
         self.group_id = settings.CLEAN_SERVICE_GROUP_ID 
-        self.topic = settings.ROW_TEXT_KAFKA_TOPIC 
+        self.row_topic = settings.ROW_TEXT_KAFKA_TOPIC 
+        self.clean_topic = settings.CLEAN_TEXT_KAFKA_TOPIC 
         self.consumer: KafkaConsumerWrapper  = None   # type: ignore
         self.producer: KafkaProducerWrapper = None       # type: ignore
 
@@ -17,12 +18,12 @@ class Manager():
         self.consumer = KafkaConsumerWrapper(
             bootstrap_servers=self.bootstrap_server,
             group_id=self.group_id,
-            topics=[self.topic]
+            topics=[self.row_topic]
         )
 
         self.producer = KafkaProducerWrapper(
             bootstrap_servers=self.bootstrap_server,
-            topic=self.topic
+            topic=self.clean_topic
         )
     
     async def handle_messeges(self, data: dict):

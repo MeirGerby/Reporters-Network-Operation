@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     MONGO_LOADER_URL: str = 'http://localhost:5000'
 
     KAFKA_BOOTSTRAP_SERVERS: str = "localhost:9092"
-    ROW_TEXT_KAFKA_TOPIC: str =  "row-text"
+    ROW_TEXT_KAFKA_TOPIC: str =  "ROW"
     # ROW_TEXT_KAFKA_GROUP_ID: str = "analyse-text" 
 
     EVENT_TYPE: str = "IMAGE_PROCESSED"
