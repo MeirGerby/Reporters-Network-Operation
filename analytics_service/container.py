@@ -25,6 +25,12 @@ class Manager:
             topics= [self.clean_topic]   
         )   
 
+    async def manage_text_analyser(self, text_analyser: TextAnalyzer):
+        return text_analyser.analyse_text(self.weapon_file)
+        
+
     async def run(self):
         await self.set_up()
-    
+        print("start the program")
+
+        self.consumer.consumer_loop()
