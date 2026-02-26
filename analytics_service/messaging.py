@@ -29,6 +29,20 @@ class KafkaConsumerWrapper:
             "auto.offset.reset": "earliest"
             }
         self.consumer = Consumer(self.conf)   # type: ignore
-        self.topic = topics 
+        self.topics = topics 
 
+    async def consumer_loop(self, collback): 
+        """listening to kafka events configured by topics"""
+        self.consumer.subscribe(self.topics) 
+        try:
+            while True:
+                msg = self.consumer.poll(1.0)
+                if msg is None: continue
+                if msg.error():
+                    print(f"Consumer error {msg.error()}")
+                    continue 
+                data = json.loads(msg.value().decode('utf-8'))   # type: ignore
+                await collback(data)
+        finally:
+            self.consumer.close()
     
