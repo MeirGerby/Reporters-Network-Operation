@@ -8,4 +8,12 @@ class KafkaProducerWrapper:
         self.producer = Producer(self.config)   # type: ignore 
         self.topic = topic 
 
-    
+    async def send(self, message: dict):
+        """send a message to kafka"""
+        self.producer.produce(
+            topic=self.topic,
+            value=json.dumps(message).encode('utf-8')
+        )
+
+        self.producer.poll(0)
+
