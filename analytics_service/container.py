@@ -13,7 +13,7 @@ class Manager:
         self.consumer: KafkaConsumerWrapper = None    # type: ignore 
         self.weapon_file = settings.WEAPON_LIST_FILE 
 
-    def set_up(self):
+    async def set_up(self):
         self.producer = KafkaProducerWrapper(
             bootstrap_servers=self.bootstrap,
             topic=self.analysed_topic
@@ -25,5 +25,6 @@ class Manager:
             topics= [self.clean_topic]   
         )   
 
-
+    async def run(self):
+        await self.set_up()
     
