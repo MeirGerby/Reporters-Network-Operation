@@ -14,25 +14,29 @@ class Manager():
 
     async def setup(self):
         """create the cunsumer and pruducer instances """
-        self.consumer = await KafkaConsumerWrapper(
+        self.consumer = KafkaConsumerWrapper(
             bootstrap_servers=self.bootstrap_server,
             group_id=self.group_id,
             topics=[self.topic]
         )
 
-        self.producer = await KafkaProducerWrapper(
+        self.producer = KafkaProducerWrapper(
             bootstrap_servers=self.bootstrap_server,
+            topic=self.topic
         )
     
     async def handle_messeges(self, data: dict):
         """get a dict from consumer and handle the text by cleaning it"""
         text = data.get('text', '') 
-        clean = self.clean_text(text)
-        return await self.consumer.consume_loop(clean)
+        text_cleaner: TextCleaner = TextCleaner(text)
+        clean = self.clean_text(text_cleaner)
+
+        await self.producer.send({"cleaned_text": clean})
+        return 
     
-    async def clean_text(self, text):
-        self.clean = TextCleaner(text=text) 
-        return self.clean.clean_text_pucnt() 
+    async def clean_text(self, cleaner: TextCleaner):
+        # self.clean = TextCleaner(text=text) 
+        return cleaner.clean_text_pucnt() 
     
     async def run(self):
         await self.setup() 

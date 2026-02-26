@@ -3,24 +3,28 @@ import json
 
 
 class KafkaProducerWrapper:
-    def __init__(self, bootstrap_servers: str):
+    """kafka producer class """
+    def __init__(self, bootstrap_servers: str, topic: str):
         self.conf = {'bootstrap.servers': bootstrap_servers}
-        self.producer = Producer(self.conf)   # type: ignore
+        self.producer = Producer(self.conf)   # type: ignore 
+        self.topic = topic
 
-    async def send(self, topic: str, message: dict):
-        
+    async def send(self, message: dict):
+        """send a message to kafka """
         self.producer.produce(
-            topic, 
+            self.topic, 
             value=json.dumps(message).encode('utf-8')
         )
         
         self.producer.poll(0)
 
     def close(self):
+        """close the kafka connection"""
         self.producer.flush(10)
 
 
 class KafkaConsumerWrapper:
+    """kafka consumer class """
     def __init__(self, bootstrap_servers: str, group_id: str, topics: list):
         self.conf = {
             'bootstrap.servers': bootstrap_servers,
@@ -31,6 +35,7 @@ class KafkaConsumerWrapper:
         self.topics = topics
 
     async def consume_loop(self, callback):
+        """litsening to kafka events configured by topics"""
         self.consumer.subscribe(self.topics)
         try:
             while True:
